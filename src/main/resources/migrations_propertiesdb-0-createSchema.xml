@@ -7,8 +7,9 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
          http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <include file="migrations_oaccdb-0-createSchema.xml"/>
-    <include file="migrations_oaccdb-1-createTables.sql"/>
-    <include file="migrations_oaccdb-2-initialize.xml"/>
-    <include file="migrations_oaccdb-3-appDomain.xml"/>
+    <changeSet author="properties-db" id="properties-0.1">
+        <sql>
+            CREATE SCHEMA PROPERTIES
+        </sql>
+    </changeSet>
 </databaseChangeLog>

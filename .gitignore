@@ -2,3 +2,7 @@
 \.idea/
 
 oacc-delegation\.iml
+
+target/
+
+dependency-reduced-pom\.xml

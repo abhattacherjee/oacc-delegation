@@ -1,7 +1,6 @@
 package com.bhattacherjee.app.delegation.core;
 
-import com.acciente.oacc.ResourcePermission;
-import com.acciente.oacc.ResourcePermissions;
+import com.acciente.oacc.*;
 
 public class SecurityModel {
     public static final String DOMAIN_DELEGATION = "delegation";
@@ -19,5 +18,14 @@ public class SecurityModel {
     public static final ResourcePermission PERM_DELETE = ResourcePermissions.getInstance("DELETE");
     public static final ResourcePermission PERM_INHERITWITHGRANT = ResourcePermissions.getInstanceWithGrantOption(ResourcePermissions.INHERIT);
     public static final ResourcePermission PERM_VIEWWITHGRANT = ResourcePermissions.getInstance("VIEW");
+
+    public static final String RESOURCENAME_ROLE_OWNER = "owner-role";
+    public static final String RESOURCENAME_ROLEHELPER_OWNER = "owner-role-helper";
+
+    public static final Credentials RESOURCEPASSWORD_ROLE_OWNER = PasswordCredentials.newInstance("ownerRolePassword".toCharArray());
+    public static final Credentials RESOURCEPASSWORD_ROLEHELPER_OWNER = PasswordCredentials.newInstance("ownerRoleHelperPassword".toCharArray());
+
+    public static final Resource RESOURCE_ROLEHELPER_OWNER = Resources.getInstance(RESOURCENAME_ROLEHELPER_OWNER);
+    public static final Resource RESOURCE_ROLE_OWNER = Resources.getInstance(RESOURCENAME_ROLE_OWNER);
 
 }

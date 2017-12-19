@@ -15,6 +15,9 @@ public class DelegationAppConfiguration extends Configuration {
 
     @Valid @NotNull @JsonProperty("oaccDb")
     private DataSourceFactory oaccdb = new DataSourceFactory();
+    
+    @Valid @NotNull @JsonProperty("propertiesDb")
+    private DataSourceFactory propertiesdb = new DataSourceFactory();
 
     @Valid @NotNull @JsonProperty("oacc")
     private AccessControlContextFactory oaccFactory = new AccessControlContextFactory();
