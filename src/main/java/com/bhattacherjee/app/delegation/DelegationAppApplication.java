@@ -4,13 +4,24 @@ import com.acciente.oacc.*;
 import com.acciente.oacc.encryptor.PasswordEncryptor;
 import com.acciente.oacc.encryptor.bcrypt.BCryptPasswordEncryptor;
 import com.acciente.oacc.sql.SQLAccessControlSystemInitializer;
+import com.bhattacherjee.app.delegation.auth.OaccBasicAuthenticator;
+import com.bhattacherjee.app.delegation.auth.OaccPrincipal;
+import com.bhattacherjee.app.delegation.core.PropertyService;
 import com.bhattacherjee.app.delegation.core.SecurityModel;
 import com.bhattacherjee.app.delegation.core.UserService;
+import com.bhattacherjee.app.delegation.db.PropertyDAO;
 import com.bhattacherjee.app.delegation.db.UserDAO;
+import com.bhattacherjee.app.delegation.resources.PropertyResource;
 import com.bhattacherjee.app.delegation.resources.UserResource;
+import com.bhattacherjee.app.delegation.resources.exceptions.AuthorizationExceptionMapper;
 import com.bhattacherjee.app.delegation.resources.exceptions.IllegalArgumentExceptionMapper;
+import com.bhattacherjee.app.delegation.resources.exceptions.InvalidCredentialsExceptionMapper;
+import com.bhattacherjee.app.delegation.resources.exceptions.NotAuthenticatedExceptionMapper;
 import io.dropwizard.Application;
 import io.dropwizard.ConfiguredBundle;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
 import io.dropwizard.db.DatabaseConfiguration;
 import io.dropwizard.db.PooledDataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
@@ -75,9 +86,6 @@ public class DelegationAppApplication extends Application<DelegationAppConfigura
                 oaccContext.createResourceClass(SecurityModel.RESOURCECLASS_PROPERTYRATE, false, false);
                 oaccContext.createResourceClass(SecurityModel.RESOURCECLASS_PROPERTYAVAILABILITY, false, false);
 
-//                oaccContext.createResourcePermission(SecurityModel.RESOURCECLASS_ROLE,
-//                        SecurityModel.PERM_INHERITWITHGRANT.getPermissionName());
-
                 oaccContext.createResourcePermission(SecurityModel.RESOURCECLASS_PROPERTY,
                         SecurityModel.PERM_VIEW.getPermissionName());
                 oaccContext.createResourcePermission(SecurityModel.RESOURCECLASS_PROPERTY,
@@ -115,13 +123,17 @@ public class DelegationAppApplication extends Application<DelegationAppConfigura
                 oaccContext.setGlobalResourcePermissions(ownerRoleHelper, SecurityModel.RESOURCECLASS_ROLE,
                         SecurityModel.DOMAIN_DELEGATION, permissionsOwnerRoleHelper);
 
-                //owner-role should be able to view/edit/delete properties
-                Set<ResourcePermission> permissionsOwnerRole = new HashSet<>();
-                permissionsOwnerRole.add(SecurityModel.PERM_VIEW);
-                permissionsOwnerRole.add(SecurityModel.PERM_EDIT);
-                permissionsOwnerRole.add(SecurityModel.PERM_DELETE);
-                oaccContext.setGlobalResourcePermissions(ownerRole, SecurityModel.RESOURCECLASS_PROPERTY,
-                        SecurityModel.DOMAIN_DELEGATION, permissionsOwnerRole);
+                //owner-role should be able to create/view/edit/delete properties
+                Set<ResourceCreatePermission> permissionCreateOwnerRole = new HashSet<>();
+                permissionCreateOwnerRole.add(SecurityModel.PERM_CREATE);
+                permissionCreateOwnerRole.add(SecurityModel.PERM_POSTCREATE_VIEW);
+                permissionCreateOwnerRole.add(SecurityModel.PERM_POSTCREATE_DELETE);
+                permissionCreateOwnerRole.add(SecurityModel.PERM_POSTCREATE_EDIT);
+
+                oaccContext.setResourceCreatePermissions(ownerRole,
+                                                        SecurityModel.RESOURCECLASS_PROPERTY,
+                                                        SecurityModel.DOMAIN_DELEGATION,
+                                                        permissionCreateOwnerRole);
 
                 // un-authenticate as root
                 oaccContext.unauthenticate();
@@ -166,15 +178,28 @@ public class DelegationAppApplication extends Application<DelegationAppConfigura
     public void run(final DelegationAppConfiguration configuration,
                     final Environment environment) {
         final DBIFactory dbiFactory = new DBIFactory();
-        final DBI userJdbi = dbiFactory.build(environment, configuration.getPropertiesdb(), "propertiesDb");
-        final UserDAO userDAO = userJdbi.onDemand(UserDAO.class);
+        final DBI propertiesDbJdbi = dbiFactory.build(environment, configuration.getPropertiesdb(), "propertiesDb");
+        final UserDAO userDAO = propertiesDbJdbi.onDemand(UserDAO.class);
+        final PropertyDAO propertyDAO = propertiesDbJdbi.onDemand(PropertyDAO.class);
 
         final AccessControlContextFactory accessControlContextFactory = configuration.getOaccFactory();
         accessControlContextFactory.initialize(environment, configuration.getOaccdb(), "oacc");
 
         environment.jersey().register(new UserResource(new UserService(userDAO, accessControlContextFactory)));
+        environment.jersey().register(new PropertyResource(new PropertyService(propertyDAO)));
+
+        environment.jersey().register(new AuthDynamicFeature(
+                new BasicCredentialAuthFilter.Builder<OaccPrincipal>()
+                        .setAuthenticator(new OaccBasicAuthenticator(accessControlContextFactory))
+                        .setRealm("OACC Basic Authentication")
+                        .buildAuthFilter()));
+
+        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(OaccPrincipal.class));
 
         environment.jersey().register(new IllegalArgumentExceptionMapper(environment.metrics()));
+        environment.jersey().register(new AuthorizationExceptionMapper(environment.metrics()));
+        environment.jersey().register(new InvalidCredentialsExceptionMapper(environment.metrics()));
+        environment.jersey().register(new NotAuthenticatedExceptionMapper(environment.metrics()));
 
     }
 

@@ -12,10 +12,16 @@ public class SecurityModel {
     public static final String RESOURCECLASS_PROPERTYRATE = "rate";
     public static final String RESOURCECLASS_PROPERTYAVAILABILITY = "availability";
 
+    public static final ResourceCreatePermission PERM_CREATE = ResourceCreatePermissions.getInstance(ResourceCreatePermissions.CREATE);
     public static final ResourcePermission PERM_INHERIT = ResourcePermissions.getInstance(ResourcePermissions.INHERIT);
     public static final ResourcePermission PERM_VIEW = ResourcePermissions.getInstance("VIEW");
     public static final ResourcePermission PERM_EDIT = ResourcePermissions.getInstance("EDIT");
     public static final ResourcePermission PERM_DELETE = ResourcePermissions.getInstance("DELETE");
+
+    public static final ResourceCreatePermission PERM_POSTCREATE_VIEW = ResourceCreatePermissions.getInstance(PERM_VIEW);
+    public static final ResourceCreatePermission PERM_POSTCREATE_EDIT = ResourceCreatePermissions.getInstance(PERM_EDIT);
+    public static final ResourceCreatePermission PERM_POSTCREATE_DELETE = ResourceCreatePermissions.getInstance(PERM_DELETE);
+
     public static final ResourcePermission PERM_INHERITWITHGRANT = ResourcePermissions.getInstanceWithGrantOption(ResourcePermissions.INHERIT);
     public static final ResourcePermission PERM_VIEWWITHGRANT = ResourcePermissions.getInstance("VIEW");
 

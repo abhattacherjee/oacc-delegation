@@ -37,10 +37,10 @@ oacc:
   sqlProfile: HSQLDB_2_3_NON_RECURSIVE
 
 logging:
-  level: DEBUG
+  level: INFO
   loggers:
-    com.bhattacherjee.app.delegation: DEBUG
+    com.bhattacherjee.app.delegation: INFO
     oaccBasicAuth: DEBUG
-    liquibase: DEBUG
+    liquibase: INFO
 
 
