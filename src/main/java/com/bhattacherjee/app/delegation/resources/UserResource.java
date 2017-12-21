@@ -16,11 +16,6 @@ public class UserResource {
         this.service = service;
     }
 
-    @GET
-    public String sayHello() {
-        return "Hello World";
-    }
-
     @POST
     public User createUser(User user) {
         return service.createUser(user);
