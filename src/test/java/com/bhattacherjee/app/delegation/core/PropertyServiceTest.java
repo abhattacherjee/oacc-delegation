@@ -51,6 +51,4 @@ public class PropertyServiceTest {
         verify(oaccContext, never()).deleteResource(any(Resource.class));
 
     }
-
-
 }

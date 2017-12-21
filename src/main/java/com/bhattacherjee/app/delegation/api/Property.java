@@ -37,8 +37,6 @@ public class Property {
         if(o == null || getClass() !=o.getClass())
             return false;
 
-        Property property = (Property)o;
-
         if(title != null && !title.equals(((Property) o).title))
             return  false;
 
