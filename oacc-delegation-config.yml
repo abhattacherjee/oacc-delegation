@@ -1,0 +1,46 @@
+## Database settings
+oaccDb:
+  # the name of the JDBC driver
+  driverClass: org.hsqldb.jdbc.JDBCDriver
+
+  # the username
+  user: oaccuser
+
+  # the password
+  password: oaccpwd
+
+  # the JDBC URL
+  url: jdbc:hsqldb:mem:oaccdb
+
+  #the sql query to run when validating a connections liveness
+  validationQuery: "SELECT COUNT(*) FROM INFORMATION_SCHEMA.SYSTEM_TABLES"
+
+propertiesDb:
+  # the name of the JDBC driver
+  driverClass: org.hsqldb.jdbc.JDBCDriver
+  
+  # the username
+  user: propertiesuser
+  
+  # the password
+  password: propertiespwd
+  
+  # the JDBC URL
+  url: jdbc:hsqldb:mem:properties
+  
+  # the sql query to run when validating a connection's liveness
+  validationQuery: "SELECT COUNT(*) FROM INFORMATION_SCHEMA.SYSTEM_TABLES"
+
+## OACC settings
+oacc:
+  schemaName: OACC
+  sqlProfile: HSQLDB_2_3_NON_RECURSIVE
+
+logging:
+  level: INFO
+  loggers:
+    com.bhattacherjee.app.delegation: DEBUG
+    oaccBasicAuth: INFO
+    liquibase: INFO
+
+
