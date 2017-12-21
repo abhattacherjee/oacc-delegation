@@ -23,7 +23,8 @@ public class SecurityModel {
     public static final ResourceCreatePermission PERM_POSTCREATE_DELETE = ResourceCreatePermissions.getInstance(PERM_DELETE);
 
     public static final ResourcePermission PERM_INHERITWITHGRANT = ResourcePermissions.getInstanceWithGrantOption(ResourcePermissions.INHERIT);
-    public static final ResourcePermission PERM_VIEWWITHGRANT = ResourcePermissions.getInstance("VIEW");
+    public static final ResourcePermission PERM_VIEWWITHGRANT = ResourcePermissions.getInstanceWithGrantOption("VIEW");
+    public static final ResourceCreatePermission PERM_POSTCREATE_VIEWWITHGRANT = ResourceCreatePermissions.getInstanceWithGrantOption(PERM_VIEWWITHGRANT);
 
     public static final String RESOURCENAME_ROLE_OWNER = "owner-role";
     public static final String RESOURCENAME_ROLEHELPER_OWNER = "owner-role-helper";

@@ -119,21 +119,26 @@ public class DelegationAppApplication extends Application<DelegationAppConfigura
 
                 //owner-role-helper should be able to grant inheritance for ROLE class
                 Set<ResourcePermission> permissionsOwnerRoleHelper = new HashSet<>();
-                permissionsOwnerRoleHelper.add(ResourcePermissions.getInstanceWithGrantOption(ResourcePermissions.INHERIT));
-                oaccContext.setGlobalResourcePermissions(ownerRoleHelper, SecurityModel.RESOURCECLASS_ROLE,
-                        SecurityModel.DOMAIN_DELEGATION, permissionsOwnerRoleHelper);
+                permissionsOwnerRoleHelper.add(SecurityModel.PERM_INHERITWITHGRANT);
+
+                oaccContext.setGlobalResourcePermissions(ownerRoleHelper,
+                                                            SecurityModel.RESOURCECLASS_ROLE,
+                                                            SecurityModel.DOMAIN_DELEGATION,
+                                                            permissionsOwnerRoleHelper);
 
                 //owner-role should be able to create/view/edit/delete properties
                 Set<ResourceCreatePermission> permissionCreateOwnerRole = new HashSet<>();
                 permissionCreateOwnerRole.add(SecurityModel.PERM_CREATE);
-                permissionCreateOwnerRole.add(SecurityModel.PERM_POSTCREATE_VIEW);
+                permissionCreateOwnerRole.add(SecurityModel.PERM_POSTCREATE_VIEWWITHGRANT);
                 permissionCreateOwnerRole.add(SecurityModel.PERM_POSTCREATE_DELETE);
                 permissionCreateOwnerRole.add(SecurityModel.PERM_POSTCREATE_EDIT);
+                permissionCreateOwnerRole.add(ResourceCreatePermissions
+                        .getInstance(ResourcePermissions.getInstance(ResourcePermissions.QUERY)));
 
-                oaccContext.setResourceCreatePermissions(ownerRole,
-                                                        SecurityModel.RESOURCECLASS_PROPERTY,
-                                                        SecurityModel.DOMAIN_DELEGATION,
-                                                        permissionCreateOwnerRole);
+                oaccContext.setResourceCreatePermissions(Resources.getInstance(SecurityModel.RESOURCENAME_ROLE_OWNER),
+                        SecurityModel.RESOURCECLASS_PROPERTY,
+                        SecurityModel.DOMAIN_DELEGATION,
+                        permissionCreateOwnerRole);
 
                 // un-authenticate as root
                 oaccContext.unauthenticate();

@@ -39,8 +39,8 @@ oacc:
 logging:
   level: INFO
   loggers:
-    com.bhattacherjee.app.delegation: INFO
-    oaccBasicAuth: DEBUG
+    com.bhattacherjee.app.delegation: DEBUG
+    oaccBasicAuth: INFO
     liquibase: INFO
 
 

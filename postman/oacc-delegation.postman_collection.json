@@ -1,0 +1,1559 @@
+{
+	"info": {
+		"name": "oacc-delegation",
+		"_postman_id": "e4164125-fc2e-b63d-6bf9-86c22bba5788",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1- Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2b739db2-6008-4e80-8920-07a6b8dfb474",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"email is present in response\"] = jsonData.email === postman.getEnvironmentVariable(\"user_email\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"{{user_email}}\",\n\t\"password\": \"{{user_password}}\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/users",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"users"
+					]
+				},
+				"description": "Create user with an unauthenticated context"
+			},
+			"response": [
+				{
+					"id": "59b00a0b-22a0-422c-95fb-5c8ca5059d9f",
+					"name": "1- Create User",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"{{user_email}}\",\n\t\"password\": \"{{user_password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "29",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 19:51:23 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						}
+					],
+					"cookie": [],
+					"responseTime": 841,
+					"body": "{\"email\":\"test@homeaway.com\"}"
+				}
+			]
+		},
+		{
+			"name": "2- Create Property",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "20dcd5d1-646b-4d4e-86ac-c51029a6088d",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"property is created\"] = jsonData.id === 1;",
+							"postman.setEnvironmentVariable(\"prop1_id\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user_email}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"User 1 Property 1\",\n\t\"postalCd\": \"80016\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties"
+					]
+				},
+				"description": "Authenticated user creates a property"
+			},
+			"response": [
+				{
+					"id": "5d79d195-8368-4d4d-9d57-a4d379008fb9",
+					"name": "2- Create Property 200 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"User 1 Property 1\",\n\t\"postalCd\": \"80016\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/properties",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "75",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 19:52:47 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						}
+					],
+					"cookie": [],
+					"responseTime": 380,
+					"body": "{\"id\":1,\"title\":\"User 1 Property 1\",\"postalCd\":80016,\"url\":\"/properties/1\"}"
+				}
+			]
+		},
+		{
+			"name": "3- Create Property #2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "72682b0b-88f9-4a77-ad4a-2e2ff073a98b",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"property is created\"] = jsonData.id === 2;",
+							"postman.setEnvironmentVariable(\"prop2_id\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user_email}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"User 1 Property 2\",\n\t\"postalCd\": \"80202\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties"
+					]
+				},
+				"description": "Authenticated user creates another property"
+			},
+			"response": [
+				{
+					"id": "71a2c4e3-5a47-41d6-af7b-d18a14287c40",
+					"name": "3- Create Property #2 200 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"User 1 Property 2\",\n\t\"postalCd\": \"80202\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/properties",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "75",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 19:53:50 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						}
+					],
+					"cookie": [],
+					"responseTime": 318,
+					"body": "{\"id\":2,\"title\":\"User 1 Property 2\",\"postalCd\":80202,\"url\":\"/properties/2\"}"
+				}
+			]
+		},
+		{
+			"name": "4- Get Properties",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d5f77969-164c-4cce-b7ec-677c3d0c0652",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"2 properties are retrieved\"] = jsonData.length === 2;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user_email}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties"
+					]
+				},
+				"description": "Get all properties created by the authenticated user"
+			},
+			"response": [
+				{
+					"id": "f4910696-406d-4ff0-9d6d-a3bcb5672b16",
+					"name": "4- Get Properties 200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/properties",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "153",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 19:54:59 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						}
+					],
+					"cookie": [],
+					"responseTime": 340,
+					"body": "[{\"id\":1,\"title\":\"User 1 Property 1\",\"postalCd\":80016,\"url\":\"/properties/1\"},{\"id\":2,\"title\":\"User 1 Property 2\",\"postalCd\":80202,\"url\":\"/properties/2\"}]"
+				}
+			]
+		},
+		{
+			"name": "5- Get Property #1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "247d7728-b0c8-48bb-ad71-d30d6408df32",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"property is retrieved\"] = \"\" + jsonData.id === pm.environment.get(\"prop1_id\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user_email}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties/{{prop1_id}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties",
+						"{{prop1_id}}"
+					]
+				},
+				"description": "Get property 1 for the authorized user"
+			},
+			"response": [
+				{
+					"id": "b52466e5-ebf9-4ce8-9244-b75b471606ab",
+					"name": "4- Get Property #1 200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/properties/{{prop1_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties",
+								"{{prop1_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "75",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 20:00:29 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						}
+					],
+					"cookie": [],
+					"responseTime": 347,
+					"body": "{\"id\":1,\"title\":\"User 1 Property 1\",\"postalCd\":80016,\"url\":\"/properties/1\"}"
+				}
+			]
+		},
+		{
+			"name": "6- Get Property #1 without auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "66d72fac-9886-4c0c-b295-278512fa5ca8",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 401\"] = responseCode.code === 401;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties",
+						"1"
+					]
+				},
+				"description": "Attempt to get property 1 details with an authenticated user"
+			},
+			"response": [
+				{
+					"id": "3122ba4c-dc8d-4072-a231-77942787584c",
+					"name": "4- Get Property #1 without auth ",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/properties/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties",
+								"1"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "plain",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "49",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 20:01:18 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "WWW-Authenticate",
+							"value": "Basic realm=\"OACC Basic Authentication\"",
+							"name": "WWW-Authenticate",
+							"description": "Indicates the authentication scheme that should be used to access the requested entity."
+						}
+					],
+					"cookie": [],
+					"responseTime": 19,
+					"body": "Credentials are required to access this resource."
+				}
+			]
+		},
+		{
+			"name": "7- Create User 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "59554d77-9e0d-48a5-a661-8443ad34c94b",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"email is present in response\"] = jsonData.email === pm.environment.get(\"user2_email\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"{{user2_email}}\",\n\t\"password\": \"{{user2_password}}\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/users",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"users"
+					]
+				},
+				"description": "Create user with an unauthenticated context"
+			},
+			"response": [
+				{
+					"id": "c8d47dde-c554-4ef4-aa95-f63bb1998833",
+					"name": "5- Create User 2 200 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"{{user2_email}}\",\n\t\"password\": \"{{user2_password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "30",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 20:01:47 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						}
+					],
+					"cookie": [],
+					"responseTime": 610,
+					"body": "{\"email\":\"test2@homeaway.com\"}"
+				}
+			]
+		},
+		{
+			"name": "8- Get Properties for User 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "99213818-b48b-4f69-8d21-1c43d94464f8",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"no properties are retrieved\"] = jsonData.length === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user2_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user2_email}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties"
+					]
+				},
+				"description": "Get all properties for the newly created user"
+			},
+			"response": [
+				{
+					"id": "58b60ba8-4050-403d-9bf3-09500a934544",
+					"name": "6- Get Properties for User 2 200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/properties",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "2",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 20:02:23 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						}
+					],
+					"cookie": [],
+					"responseTime": 328,
+					"body": "[]"
+				}
+			]
+		},
+		{
+			"name": "9- Get Property #1 for User 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "49758c7d-536e-4779-86b1-c654010c6821",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is unauthorized\"] = responseCode.code === 403;"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user2_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user2_email}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties/{{prop1_id}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties",
+						"{{prop1_id}}"
+					]
+				},
+				"description": "Attempt to get property 1 for unauthorized user 2"
+			},
+			"response": [
+				{
+					"id": "48a34b5c-3c96-4be3-8ac8-134d492b3433",
+					"name": "9- Get Property #1 for User 2 403 Forbidden",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/properties/{{prop1_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties",
+								"{{prop1_id}}"
+							]
+						}
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "12",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 20:03:27 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						}
+					],
+					"cookie": [],
+					"responseTime": 334,
+					"body": "{\"code\":403}"
+				}
+			]
+		},
+		{
+			"name": "10- Share Property #1 View with User 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "de75300c-09a4-4636-a1dc-a22169e74ebc",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is OK No Content\"] = responseCode.code === 204;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user_email}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/properties/{{prop1_id}}/?share_with={{user2_email}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties",
+						"{{prop1_id}}",
+						""
+					],
+					"query": [
+						{
+							"key": "share_with",
+							"value": "{{user2_email}}",
+							"equals": true
+						}
+					]
+				},
+				"description": "Share view permissions for property 1 with user 2"
+			},
+			"response": [
+				{
+					"id": "d6bf0109-a21a-4a16-b662-839cddb4fb5f",
+					"name": "4- Share Property #1 View with User 2 ",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/properties/{{prop1_id}}/?share_with={{user2_email}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties",
+								"{{prop1_id}}",
+								""
+							],
+							"query": [
+								{
+									"key": "share_with",
+									"value": "{{user2_email}}",
+									"equals": true
+								}
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 20:04:10 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						}
+					],
+					"cookie": [],
+					"responseTime": 357,
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "11- Get Property #1 for User 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "abd517e9-cae9-4c49-a1fa-d235fc376a8f",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"property is retrieved\"] = \"\" + jsonData.id === pm.environment.get(\"prop1_id\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user2_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user2_email}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties/{{prop1_id}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties",
+						"{{prop1_id}}"
+					]
+				},
+				"description": "Attempt to get property 1 for user 2 again"
+			},
+			"response": [
+				{
+					"id": "0307e7e8-313a-4936-bbdc-102a7235bf93",
+					"name": "10- Get Property #1 for User 2",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/properties/{{prop1_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties",
+								"{{prop1_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "75",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 20:05:01 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						}
+					],
+					"cookie": [],
+					"responseTime": 338,
+					"body": "{\"id\":1,\"title\":\"User 1 Property 1\",\"postalCd\":80016,\"url\":\"/properties/1\"}"
+				}
+			]
+		},
+		{
+			"name": "12- Create Property for User 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5f6af10a-1fd0-49ff-b6cb-cab092b9d355",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"property is created\"] = jsonData.id === 3;",
+							"postman.setEnvironmentVariable(\"prop3_id\", jsonData.id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user2_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user2_email}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"User 2 Property 1\",\n\t\"postalCd\": \"80202\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties"
+					]
+				},
+				"description": "Create a new property for user 2"
+			},
+			"response": [
+				{
+					"id": "3184ddd7-fab2-4308-a7ce-29643d161ac0",
+					"name": "12- Create Property for User 2 200 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"User 2 Property 1\",\n\t\"postalCd\": \"80202\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/properties",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "75",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 20:05:40 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						}
+					],
+					"cookie": [],
+					"responseTime": 345,
+					"body": "{\"id\":3,\"title\":\"User 2 Property 1\",\"postalCd\":80202,\"url\":\"/properties/3\"}"
+				}
+			]
+		},
+		{
+			"name": "13- Get Properties for User 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f8ebc84d-261b-4bfd-8be6-ed4abc922df1",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"tests[\"2 properties are retrieved\"] = jsonData.length === 2;",
+							"tests[\"property 1 is correct\"] = \"\" + jsonData[0].id === pm.environment.get(\"prop1_id\"); ",
+							"tests[\"property 2 is correct\"] = \"\" + jsonData[1].id === pm.environment.get(\"prop3_id\"); "
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user2_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user2_email}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties"
+					]
+				},
+				"description": "Get all properties for user 2"
+			},
+			"response": [
+				{
+					"id": "d0a7ae56-37b0-4d7a-9bea-c9d5a05b1fc0",
+					"name": "8- Get Properties for User 2 200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"My Property\",\n\t\"postalCd\": \"12345\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/properties",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "153",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 20:06:09 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						}
+					],
+					"cookie": [],
+					"responseTime": 391,
+					"body": "[{\"id\":1,\"title\":\"User 1 Property 1\",\"postalCd\":80016,\"url\":\"/properties/1\"},{\"id\":3,\"title\":\"User 2 Property 1\",\"postalCd\":80202,\"url\":\"/properties/3\"}]"
+				}
+			]
+		},
+		{
+			"name": "14- Create Property without Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9d2e3d64-fbbe-4370-8cca-9e2f0f9c70d2",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is Unauthorized\"] = responseCode.code === 401;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"Anonymous Property\",\n\t\"postalCd\": \"80202\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties"
+					]
+				},
+				"description": "Attempt to create a property without an authenticated session"
+			},
+			"response": [
+				{
+					"id": "a8db974e-5d5b-4736-813a-1f3d778a37fc",
+					"name": "7- Create Property without Auth",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Anonymous Property\",\n\t\"postalCd\": \"80202\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/properties",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"properties"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "plain",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "49",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 21 Dec 2017 20:07:14 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "WWW-Authenticate",
+							"value": "Basic realm=\"OACC Basic Authentication\"",
+							"name": "WWW-Authenticate",
+							"description": "Indicates the authentication scheme that should be used to access the requested entity."
+						}
+					],
+					"cookie": [],
+					"responseTime": 36,
+					"body": "Credentials are required to access this resource."
+				}
+			]
+		}
+	]
+}

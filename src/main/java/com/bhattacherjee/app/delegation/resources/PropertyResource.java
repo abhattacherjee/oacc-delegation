@@ -35,4 +35,12 @@ public class PropertyResource {
     public Property getPropertyById(@Auth OaccPrincipal oaccPrincipal, @PathParam("id") LongParam id) {
         return propertyService.getPropertyById(oaccPrincipal.getAccessControlContext(), id.get());
     }
+
+    @PUT
+    @Path("/{id}")
+    public void shareProperty(@Auth OaccPrincipal oaccPrincipal,
+                              @PathParam("id") LongParam id,
+                              @QueryParam("share_with") String email) {
+        propertyService.shareProperty(oaccPrincipal.getAccessControlContext(), id.get(), email);
+    }
 }
