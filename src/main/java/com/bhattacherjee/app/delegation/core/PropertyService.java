@@ -46,7 +46,8 @@ public class PropertyService {
         else {
             final List<Long> propertyIds = propertyResources.
                                                 stream()
-                                                .map(propertyResource -> Long.valueOf(propertyResource.getExternalId()))
+                                                .map(Resource::getExternalId)
+                                                .map(Long::valueOf)
                                                 .collect(Collectors.toList());
             return propertyDAO.findByIds(propertyIds);
         }
